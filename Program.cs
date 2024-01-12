@@ -48,7 +48,7 @@ namespace GateLogix
             return connection;
         }
     }
-    class Zaposlenik
+    class Zaposlenik : IComparable
     {
         public string ime { get; }
         public string prezime { get; }
@@ -60,6 +60,12 @@ namespace GateLogix
             this.firma = firma;
         }
 
+        public int CompareTo(object obj)
+        {
+            Zaposlenik _zaposlenik = obj as Zaposlenik;
+            return this.ime.CompareTo(_zaposlenik.ime);
+
+        }
     }
     class RadniZapis
     {
