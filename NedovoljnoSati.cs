@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI;
@@ -35,24 +36,32 @@ namespace GateLogix
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
-            Firma firma= data.firme[comboBox1.SelectedIndex + 1];
-            List<Triplet> triplets = data.nedovoljnoSatiuTjednu(firma, dateTimePicker1.Value);
-            foreach (Triplet triplet in triplets)
-            {
-                dataGridView1.Rows.Add((triplet.First as Zaposlenik).ime, (triplet.First as Zaposlenik).prezime, triplet.Second);
-            }
+            prikazPodataka();
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
+            prikazPodataka();
+        }
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            prikazPodataka();
+        }
+        private void prikazPodataka()
+        {
             dataGridView1.Rows.Clear();
             Firma firma = data.firme[comboBox1.SelectedIndex + 1];
-            List<Triplet> triplets = data.nedovoljnoSatiuTjednu(firma, dateTimePicker1.Value);
-            foreach (Triplet triplet in triplets)
+
+            List<Zaposlenik> zaposlenici = firma.satiuTjednu(dateTimePicker1.Value, out List<TimeSpan> sati);
+            for (int i=0;i< zaposlenici.Count;i++)
             {
-                dataGridView1.Rows.Add((triplet.First as Zaposlenik).ime, (triplet.First as Zaposlenik).prezime, triplet.Second);
+                if(checkBox1.Checked)
+                    dataGridView1.Rows.Add(zaposlenici[i].ime, zaposlenici[i].prezime, sati[i].TotalHours);
+                else if(sati[i].TotalHours <40)
+                    dataGridView1.Rows.Add(zaposlenici[i].ime, zaposlenici[i].prezime, sati[i].TotalHours);
             }
         }
+
+
     }
 }

@@ -71,6 +71,10 @@ namespace GateLogix
             dateTimePicker3.ShowUpDown = true;
             dateTimePicker4.Format = DateTimePickerFormat.Time;
             dateTimePicker4.ShowUpDown = true;
+
+            dataGridView1.ReadOnly = true;
+            dataGridView2.ReadOnly = true;
+            dataGridView3.ReadOnly = true;
         }
 
         private void PrikaziPodatke_Load(object sender, EventArgs e)

@@ -167,7 +167,7 @@ namespace GateLogix
 
 
 
-                string sql = "INSERT INTO radniZapis (zaposlenik, vrijeme) VALUES ";
+                string sql = "INSERT INTO radniZapis (zaposlenik, vrijeme, ulaz) VALUES ";
 
 
 
@@ -197,7 +197,7 @@ namespace GateLogix
                                 dt = dt.AddSeconds(dateTimePicker7.Value.Second);
                                 dt = dt.AddMinutes(dateTimePicker7.Value.Minute);
                                 dt = dt.AddHours(dateTimePicker7.Value.Hour);
-                                sql += "(" + zaposlenikID + ",'" + dt.ToString("yyyy-MM-ddTHH:mm:ss") + "'),";
+                                sql += "(" + zaposlenikID + ",'" + dt.ToString("yyyy-MM-ddTHH:mm:ss") + "', 1),";
 
                                 DateTime dt2 = new DateTime(dt.Year, dt.Month, dt.Day);
                                 dt2 = dt2.AddSeconds(rnd.Next(Int32.Parse(textBox4.Text) * 60 * 2) - Int32.Parse(textBox4.Text) * 60);
@@ -206,15 +206,16 @@ namespace GateLogix
                                 dt2 = dt2.AddHours(dateTimePicker8.Value.Hour);
 
 
-                                sql += "(" + zaposlenikID + ",'" + dt2.ToString("yyyy-MM-ddTHH:mm:ss") + "')";
+                                sql += "(" + zaposlenikID + ",'" + dt2.ToString("yyyy-MM-ddTHH:mm:ss") + "', 0)";
                             }
                             else
                             {
                                 dt = (dt.Date - dt.TimeOfDay).AddSeconds(rnd.Next(24 * 60 * 60 - 1));
-                                sql += "(" + zaposlenikID + ",'" + dt.ToString("yyyy-MM-ddTHH:mm:ss") + "'),";
-
                                 DateTime dt2 = new DateTime(dt.Year, dt.Month, dt.Day).AddSeconds(rnd.Next(24 * 60 * 60 - 1));
-                                sql += "(" + zaposlenikID + ",'" + dt2.ToString("yyyy-MM-ddTHH:mm:ss") + "')";
+
+                                sql += "(" + zaposlenikID + ",'" + dt.ToString("yyyy-MM-ddTHH:mm:ss") + "'," + (dt.CompareTo(dt2) > 0? 1:0) +"),";
+
+                                sql += "(" + zaposlenikID + ",'" + dt2.ToString("yyyy-MM-ddTHH:mm:ss") + "',"+ (dt.CompareTo(dt2) > 0 ? 0 : 1) + ")";
                             }
 
 
